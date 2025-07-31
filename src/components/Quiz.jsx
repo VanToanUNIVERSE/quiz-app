@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Answers from './Answers';
 import { quizzes } from '../testData';
 import '../index.css';
+import { Link } from 'react-router-dom';
 
 const Quiz = () => {
     const [isChoose, setIsChoose] = useState(false);
@@ -42,9 +43,11 @@ const Quiz = () => {
     return (
         <div>
             <div className=' w-[60%] mx-auto flex flex-col '>
-                <div className=' bg-black text-blue-200 px-7 py-5 flex justify-between rounded-t-2xl'>
-                    <h3>{currentQuiz ? currentQuiz.question : 'complete'}</h3>
-                    <p>Question {currentQuiz ? currentQuiz.id : quizzes.length} of {quizzes.length}</p>
+                <div className=' bg-black text-blue-200 px-7 py-5 flex justify-between rounded-t-2xl text-center'>
+                <p>Question {currentQuiz ? currentQuiz.id : quizzes.length} of {quizzes.length}</p> 
+                    <h3 className=' font-bold '>{currentQuiz ? currentQuiz.question : 'complete'}</h3>
+                    
+                    <Link to="/" className='hover:text-amber-100'>Cancel</Link>
                 </div>
                 <Answers length={quizzes.length} score={score} isChoose={isChoose} correct={correct} selectedIndex={selectedIndex} answers={currentQuiz ? currentQuiz.answers : []} onClick={handleQuiz}></Answers>
                 <button onClick={handleNext} className={`${isChoose ? '' : 'invisible'} px-7 py-2 rounded cursor-pointer bg-lime-500 mx-auto mt-2 hover:bg-lime-400`}>Next</button>

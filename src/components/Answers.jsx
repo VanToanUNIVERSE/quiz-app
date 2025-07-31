@@ -12,7 +12,7 @@ const Answers = (props) => {
         }
     };
     if (!props.answers || props.answers.length === 0) {
-        return (<h2 className='flex justify-center text-4xl p-5'>Bạn đã hoàn thành {props.score} / {props.length}</h2>);
+        return (<h2 className='flex justify-center text-4xl p-5'>Your score: {props.score} / {props.length}</h2>);
     }
     return (
         <div className=''>
