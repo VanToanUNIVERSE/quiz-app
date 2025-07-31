@@ -13,7 +13,7 @@ const Home = () => {
                 </div>
 
                 <h2 className='font-bold text-2xl'>Wellcome to quizzes</h2>
-                <Link className=' px-7 py-3 bg-red-500 hover:bg-red-400 rounded' to="/">Logout</Link>
+                <Link className=' px-7 py-3 bg-red-500 hover:bg-red-400 rounded' to="/login">Login</Link>
             </div>
             <div className=' w-[60%] max-h-[60vh] shadow mx-auto my-5 flex flex-col gap-3 p-3 overflow-hidden scroll-smooth'>
                 <div className=' flex justify-between items-center'>
