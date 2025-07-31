@@ -20,8 +20,6 @@
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
   font-family: inherit;
@@ -46,6 +44,11 @@ h1 {
   padding: 20px;
   border-radius: 50%;
 }
+
+.shadow {
+  box-shadow: 0px 0px 25px #9e9c9c;
+}
+
 
 @media (prefers-color-scheme: light) {
   :root {

@@ -39,11 +39,12 @@ const Quiz = () => {
         setIsChoose(false);
         setSelectedIndex(null);
         setCorrect(null);
+        setScore(0);
     }
     return (
         <div>
-            <div className=' w-[60%] mx-auto flex flex-col '>
-                <div className=' bg-black text-blue-200 px-7 py-5 flex justify-between rounded-t-2xl text-center'>
+            <div className=' w-[60%] mx-auto flex flex-col p-20    '>
+                <div className=' bg-lime-500 px-7 py-5 flex justify-between rounded-t-2xl text-center'>
                 <p>Question {currentQuiz ? currentQuiz.id : quizzes.length} of {quizzes.length}</p> 
                     <h3 className=' font-bold '>{currentQuiz ? currentQuiz.question : 'complete'}</h3>
                     
