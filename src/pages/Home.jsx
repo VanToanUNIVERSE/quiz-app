@@ -9,7 +9,7 @@ const Home = () => {
             <div className='  flex justify-between items-center'>
                 <div className='flex justify-between gap-3 items-center'>
                     <div className=' w-13 h-13 rounded-full'>
-                        <img className=' w-full h-full rounded-full' src="https://picsum.photos/300/200"></img>
+                        <img alt='Avara' className=' w-full h-full rounded-full' src={`http://127.0.0.1:8000/storage/${user.image}` }></img>
                     </div>
                     <p className=' font-bold'>{user.fullName || ''}</p>
                 </div>
@@ -21,7 +21,7 @@ const Home = () => {
                         e.preventDefault();
                         logout(setUser);
                     }}
-                    className="px-7 py-3 bg-red-500 hover:bg-red-400 rounded text-white"
+                    className="px-7 py-3 bg-red-500 hover:bg-red-400 rounded text-white cursor-pointer"
                 >
                     Logout
                 </button>) : <Link className=' px-7 py-3 bg-red-500 hover:bg-red-400 rounded' to="/login">Login</Link>}
