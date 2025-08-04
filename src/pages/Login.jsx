@@ -42,6 +42,8 @@ const Login = () => {
                 setResponse({ message: data.message, status: data.errors });
                 if (!data.errors) {
                     // Lưu user vào localStorage
+                    console.log(data.token);
+                    localStorage.setItem("token", data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                 }
             })
