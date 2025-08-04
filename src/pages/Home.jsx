@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
     return (
         <div className='p-10'>
             <div className='  flex justify-between items-center'>
@@ -9,7 +10,7 @@ const Home = () => {
                     <div className=' w-13 h-13 rounded-full'>
                         <img className=' w-full h-full rounded-full' src="https://picsum.photos/300/200"></img>
                     </div>
-                    <p className=' font-bold'>Name</p>
+                    <p className=' font-bold'>{user.fullName}</p>
                 </div>
 
                 <h2 className='font-bold text-2xl'>Wellcome to quizzes</h2>

@@ -22,8 +22,19 @@ const Login = () => {
             alert("Vui lòng nhập đúng thông tin.");
             return;
         }
-
-        alert('thanh cong');
+        fetch('http://127.0.0.1:8000/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'username' : document.getElementById('username').value,
+                'password' : document.getElementById('password').value
+            })
+        }).then(res => res.json())
+        .then(data => console.log(data.status))
+        .catch(err => console.log("Error: ", err));
+        
     };
     return (
         <div className='p-1'>

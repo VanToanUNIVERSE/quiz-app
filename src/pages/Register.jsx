@@ -14,7 +14,7 @@ const Register = () => {
     });
     const [response, setResponse] = useState({
         message: '',
-        status: ''
+        status: '',
     });
 
     const handleValidate = (e) => {
@@ -34,9 +34,10 @@ const Register = () => {
             alert("Please fix the errors");
             return;
         }
-        fetch('http://127.0.0.1:8000/api/users', {
+        fetch('http://127.0.0.1:8000/api/register', {
             method: 'POST',
             headers: {
+                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -46,12 +47,18 @@ const Register = () => {
             })
         })
             .then(res => res.json())
-            .then(data => setResponse({message: data.message, status: data.status}))
+            .then(data => {
+                setResponse({ message: data.message, status: data.errors });
+                if (!data.errors) {
+                    // Lưu user vào localStorage
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                }
+            })
             .catch(err => console.log("err:", err));
     };
 
     const invisible = () => {
-        setResponse({message: '', status: ''});
+        setResponse({ message: '', status: '' });
     }
 
     return (
@@ -66,9 +73,8 @@ const Register = () => {
                     <button type='submit' className='px-7 py-1 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer'>Register</button>
                     <Link className=' underline' to="/login">Login</Link>
                 </div>
-                <Message onClick={invisible} visible={response.message != '' ? '' : 'invisible'} message={response.message} to={response.status !== 'success' ? '/register' : '/'}></Message>
+                <Message onClick={invisible} visible={response.message != '' ? '' : 'invisible'} message={response.message || 'The account has been created'} to={response.status ? '/register' : '/'}></Message>
             </form>
-            
         </div>
     );
 };
