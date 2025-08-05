@@ -12,13 +12,18 @@ class CollectionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Collection::withCount('quizzes')->get();
+        $data = Collection::withCount('quizzes')->paginate(5);
         return response()->json([
             'status' => 'success',
             'message' => 'List of collections',
-            'data' => CollectionResource::collection($data)
+            'data' => CollectionResource::collection($data),
+            'meta' => [
+                'current_page' => $data->currentPage(),
+                'last_page' => $data->lastPage(),
+                'total' => $data->total(),
+            ]
         ]);
     }
 
