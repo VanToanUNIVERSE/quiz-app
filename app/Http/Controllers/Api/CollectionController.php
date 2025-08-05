@@ -14,7 +14,7 @@ class CollectionController extends Controller
      */
     public function index()
     {
-        $data = Collection::all();
+        $data = Collection::withCount('quizzes')->get();
         return response()->json([
             'status' => 'success',
             'message' => 'List of collections',
@@ -43,7 +43,12 @@ class CollectionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = Collection::with('quizzes')->find(1);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'List of collections',
+            'data' => new CollectionResource($data)
+        ]);
     }
 
     /**

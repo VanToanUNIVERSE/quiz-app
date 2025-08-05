@@ -16,7 +16,9 @@ class CollectionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name
+            'name' => $this->name,
+            'quiz_count' => $this->quizzes_count,
+            'quizzes' => QuizResource::collection($this->quizzes)
         ];
     }
 }
