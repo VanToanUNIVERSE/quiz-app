@@ -10,7 +10,7 @@ class Answer extends Model
 {
     use HasFactory;
     protected $fillable = ['correct', 'content'];
-    public function collection() {
-        return $this->belongsTo(Collection::class);
+    public function quiz() {
+        return $this->belongsTo(Quiz::class);
     }
 }
