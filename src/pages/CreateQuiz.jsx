@@ -9,6 +9,9 @@ const CreateQuiz = () => {
         name: '',
         quizzes: [{ id: Date.now(), question: '' }]
     });
+    const handleNameChange = (e) => {
+        setCollection({...collection, name: e.target.value})
+    }
     const handleCurrentQuestion = (e, index) => {
         const updatedQuizzes = [...collection.quizzes];
         updatedQuizzes[index].question = e.target.value;
@@ -28,11 +31,12 @@ const CreateQuiz = () => {
         });
 
     }
+    console.log(collection);
     return (
         <div className='p-10'>
             <h2>Create Your Quiz</h2>
             <form className='w-[70%]'>
-                <InputGroup label="Collection name" for="collection-name" id="collection-name" type="text" placeholder="Enter your collection name"></InputGroup>
+                <InputGroup onKeyUp={handleNameChange} label="Collection name" for="collection-name" id="collection-name" type="text" placeholder="Enter your collection name"></InputGroup>
                 {collection.quizzes.map((item, index) => {
                     return (
                         <SetQuiz key={item.id} handleCurrentQuestion={(e) => handleCurrentQuestion(e, index)} currentQuestion={item.question}></SetQuiz>
