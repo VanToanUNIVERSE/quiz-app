@@ -6,6 +6,7 @@ import Home from './pages/Home.jsx'
 import Play from './pages/Play.jsx'
 import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
+import CreateQuiz from './pages/CreateQuiz.jsx'
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/play" element={<Play></Play>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/register" element={<Register></Register>}></Route>
+        <Route path='/create-quiz' element={<CreateQuiz></CreateQuiz>}></Route>
       </Routes>
     </BrowserRouter>
   )
