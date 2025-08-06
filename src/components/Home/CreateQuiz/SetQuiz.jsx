@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import InputGroup from '../../InputGroup';
 import AnswerGroup from './AnswerGroup';
 
-const SetQuiz = ({handleCurrentQuestion, currentQuestion}) => {
+const SetQuiz = ({handleCurrentQuestion, currentQuestion, onKeyUp, quizIndex}) => {
     const [collapse, setCollapse] = useState(false);
     
     const handleCollapse = (e) => {
@@ -16,7 +16,7 @@ const SetQuiz = ({handleCurrentQuestion, currentQuestion}) => {
             <h3 className={` font-bold transition-all duration-300 ${collapse ? ' translate-0' : ' translate-x-48'}`}>{collapse ? currentQuestion : ''}</h3>
             <div className={` transition-all duration-300 overflow-hidden ${collapse ? ' max-h-0' : ' max-h-[1000px]'}`}>
                 <InputGroup onKeyUp={handleCurrentQuestion} label="Question" for="question" id="question" type="text" placeholder="Enter your question"></InputGroup>
-                <AnswerGroup></AnswerGroup>
+                <AnswerGroup onKeyUp={onKeyUp} quizIndex={quizIndex}></AnswerGroup>
             </div>
         </fieldset>
     );
