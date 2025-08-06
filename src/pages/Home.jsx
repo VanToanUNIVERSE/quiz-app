@@ -21,8 +21,8 @@ const Home = () => {
             .catch(err => console.log('Error: ', err))
     }, [page]);
     return (
-        <div className='p-10'>
-            <div className='  flex justify-between items-center'>
+        <div className=' h-full w-full absolute p-2 md:p-10'>
+            <div className='  flex justify-between items-center text-center'>
                 <div className='flex justify-between gap-3 items-center'>
                     <div className=' w-13 h-13 rounded-full'>
                         <img alt='Avara' className=' w-full h-full rounded-full' src={`http://127.0.0.1:8000/storage/${user.image}`}></img>
@@ -42,7 +42,7 @@ const Home = () => {
                     Logout
                 </button>) : <Link className=' px-7 py-3 bg-red-500 hover:bg-red-400 rounded' to="/login">Login</Link>}
             </div>
-            <div className=' w-[60%] max-h-[60vh] shadow mx-auto my-5 flex flex-col gap-3 p-3 overflow-hidden scroll-smooth'>
+            <div className=' w-full md:w-[60%] max-h-[60vh] shadow mx-auto my-5 flex flex-col gap-3 p-3 overflow-hidden scroll-smooth'>
                 {collections.map((item) => {
                     return (
                         <div className=' grid grid-cols-3 items-center' key={item.id}>
@@ -52,9 +52,8 @@ const Home = () => {
                             <div className="flex justify-center">
                                 <p>{item.quiz_count} questions</p>
                             </div>
-
                             <div className="flex justify-end">
-                                <Link className='px-7 py-3 bg-lime-500 hover:bg-lime-400 rounded inline-block w-fit' to="/play">
+                                <Link className='px-7 py-3 bg-lime-500 hover:bg-lime-400 rounded inline-block w-fit' to={`/play?id=${item.id}`}>
                                     Play
                                 </Link>
                             </div>
@@ -63,7 +62,7 @@ const Home = () => {
 
 
             </div>
-            <div className=' flex w-[60%] mx-auto my-17 justify-between'>
+            <div className=' flex w-full md:w-[60%] mx-auto my-17 justify-between'>
                 <div className='flex justify-center items-center gap-3 '>
                     <button className=' cursor-pointer'>Pre-vious</button>
                     {Array(totalPage).fill(0).map((item, index) => {
@@ -78,7 +77,6 @@ const Home = () => {
                     <button className='px-7 py-3 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer'>Create quiz</button>
                 </div>
             </div>
-
         </div>
     );
 };
