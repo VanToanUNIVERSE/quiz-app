@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InputGroup from '../../InputGroup';
 import AnswerGroup from './AnswerGroup';
 
-const SetQuiz = ({handleCurrentQuestion, currentQuestion, onKeyUp, quizIndex}) => {
+const SetQuiz = ({ handleCurrentQuestion, currentQuestion, onKeyUp, quizIndex, collapseInput }) => {
     const [collapse, setCollapse] = useState(false);
-    
+
+    useEffect(() => {
+        setCollapse(collapseInput);
+    }, [collapseInput]);
+
     const handleCollapse = (e) => {
         e.preventDefault();
         setCollapse(!collapse);

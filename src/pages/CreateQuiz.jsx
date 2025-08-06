@@ -3,6 +3,8 @@ import InputGroup from '../components/InputGroup';
 import SetQuiz from '../components/Home/CreateQuiz/SetQuiz';
 
 const CreateQuiz = () => {
+    const [openedIndex, setOpenedIndex] = useState(0);
+
     const [collection, setCollection] = useState({
         name: '',
         quizzes: [
@@ -40,7 +42,9 @@ const CreateQuiz = () => {
     };
 
     const addQuiz = (e) => {
+
         e.preventDefault();
+        
         const oldQuizzes = [...collection.quizzes];
         setCollection({
             ...collection,
@@ -53,6 +57,7 @@ const CreateQuiz = () => {
                 ]
             }]
         });
+        setOpenedIndex(oldQuizzes.length);
     }
     const handleChangeAnswer = (e, quizIndex, answerIndex) => {
         const updatedQuizzes = [...collection.quizzes];
@@ -63,7 +68,6 @@ const CreateQuiz = () => {
         } else {
             updatedQuizzes[quizIndex].answers[answerIndex].content = e.target.value;
         }
-
 
         setCollection({
             ...collection,
@@ -78,11 +82,12 @@ const CreateQuiz = () => {
                 <InputGroup onKeyUp={handleNameChange} label="Collection name" for="collection-name" id="collection-name" type="text" placeholder="Enter your collection name"></InputGroup>
                 {collection.quizzes.map((item, index) => {
                     return (
-                        <SetQuiz onKeyUp={handleChangeAnswer} quizIndex={index} key={item.id} handleCurrentQuestion={(e) => handleCurrentQuestion(e, index)} currentQuestion={item.question}></SetQuiz>
+                        <SetQuiz collapseInput={openedIndex !== index} onKeyUp={handleChangeAnswer} quizIndex={index} key={item.id} handleCurrentQuestion={(e) => handleCurrentQuestion(e, index)} currentQuestion={item.question}></SetQuiz>
                     );
                 })}
 
                 <button onClick={addQuiz} className=' m-3 px-2 py-1 text-gray-200 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer'>More Quiz</button>
+                <button className=' m-3 px-2 py-1 text-gray-200 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer'>Save</button>
             </form>
         </div>
     );
