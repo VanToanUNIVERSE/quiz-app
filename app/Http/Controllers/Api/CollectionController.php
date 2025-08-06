@@ -46,9 +46,9 @@ class CollectionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        $data = Collection::with('quizzes')->find(1);
+        $data = Collection::withCount('quizzes')->find($request->id);
         return response()->json([
             'status' => 'success',
             'message' => 'List of collections',
