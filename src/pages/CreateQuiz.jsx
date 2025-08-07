@@ -44,7 +44,7 @@ const CreateQuiz = () => {
     const addQuiz = (e) => {
 
         e.preventDefault();
-        
+
         const oldQuizzes = [...collection.quizzes];
         setCollection({
             ...collection,
@@ -75,11 +75,26 @@ const CreateQuiz = () => {
         });
     }
     console.log(collection);
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        fetch('http://127.0.0.1:8000/api/collections', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                collection: collection
+            })
+        })
+            .then(res => res.json())
+            .then(data => console.log(data))
+            .catch(err => console.log('Error: ', err));
+    }
     return (
         <div className='p-10'>
             <h2>Create Your Quiz</h2>
-            <form className='w-[70%]'>
-                <InputGroup onKeyUp={handleNameChange} label="Collection name" for="collection-name" id="collection-name" type="text" placeholder="Enter your collection name"></InputGroup>
+            <form className='w-[70%]' onSubmit={handleSubmit}>
+                <InputGroup onKeyUp={handleNameChange} label="Collection name" for="collection-name" id="collection-name" type="text" placeholder="Enter your collection name" required={true}></InputGroup>
                 {collection.quizzes.map((item, index) => {
                     return (
                         <SetQuiz collapseInput={openedIndex !== index} onKeyUp={handleChangeAnswer} quizIndex={index} key={item.id} handleCurrentQuestion={(e) => handleCurrentQuestion(e, index)} currentQuestion={item.question}></SetQuiz>
@@ -87,7 +102,7 @@ const CreateQuiz = () => {
                 })}
 
                 <button onClick={addQuiz} className=' m-3 px-2 py-1 text-gray-200 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer'>More Quiz</button>
-                <button className=' m-3 px-2 py-1 text-gray-200 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer'>Save</button>
+                <button type='submit' className=' m-3 px-2 py-1 text-gray-200 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer'>Save</button>
             </form>
         </div>
     );
