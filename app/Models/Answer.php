@@ -9,7 +9,7 @@ use App\Models\Collection;
 class Answer extends Model
 {
     use HasFactory;
-    protected $fillable = ['correct', 'content'];
+    protected $fillable = ['correct', 'content', 'quiz_id'];
     public function quiz() {
         return $this->belongsTo(Quiz::class);
     }

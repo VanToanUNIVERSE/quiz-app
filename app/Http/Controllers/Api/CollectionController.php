@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CollectionResource;
+use App\Models\Answer;
 use App\Models\Collection;
+use App\Models\Quiz;
 use Illuminate\Http\Request;
+use PHPUnit\TestRunner\TestResult\Collector;
 
 class CollectionController extends Controller
 {
@@ -40,7 +43,30 @@ class CollectionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $collection = $request->collection;
+        $newCl = Collection::create([
+            'name' => $collection['name']
+        ]);
+
+        $quizzes = $collection['quizzes'];
+        foreach($quizzes as $quiz) {
+            $newQuiz = Quiz::create([
+                'question' => $quiz['question'],
+                'collection_id' => $newCl->id
+            ]);
+            $answers = $quiz['answers'];
+            foreach($answers as $answer) {
+                Answer::create([
+                    'content' => $answer['content'],
+                    'correct' => $answer['correct'] == true ? 1 : 0,
+                    'quiz_id' => $newQuiz->id
+                ]);
+            }
+        }
+
+        return response()->json([
+            'message' => $answers
+        ]);
     }
 
     /**
