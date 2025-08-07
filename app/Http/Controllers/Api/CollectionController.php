@@ -58,7 +58,7 @@ class CollectionController extends Controller
             foreach($answers as $answer) {
                 Answer::create([
                     'content' => $answer['content'],
-                    'correct' => $answer['correct'] == true ? 1 : 0,
+                    'correct' => $answer['correct'] === 'true' ? 1 : 0,
                     'quiz_id' => $newQuiz->id
                 ]);
             }
