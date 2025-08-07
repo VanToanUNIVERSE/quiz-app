@@ -71,10 +71,10 @@ const Register = () => {
         <div className='p-1'>
             <form method='post' onSubmit={handleSubmit} className='flex flex-col gap-1 p-10 w-[40%] shadow mx-auto mt-5 justify-center items-center rounded' encType="multipart/form-data">
                 <h1>Register</h1>
-                <InputGroup label="Username" for="username" id="username" name="username" type="text" onKeyUp={handleValidate} error={error.username}></InputGroup>
-                <InputGroup label="Password" for="password" id="password" name="password" type="password" onKeyUp={handleValidate} error={error.password}></InputGroup>
-                <InputGroup label="Confirm password" for="confirm-password" id="confirm-password" name="confirmPassword" type="password" onKeyUp={handleValidate} error={error.confirmPassword}></InputGroup>
-                <InputGroup label="Full Name" for="full-name" id="full-name" name="fullName" type="text" onKeyUp={handleValidate} error={error.fullName}></InputGroup>
+                <InputGroup label="Username" for="username" id="username" name="username" type="text" onChange={handleValidate} error={error.username}></InputGroup>
+                <InputGroup label="Password" for="password" id="password" name="password" type="password" onChange={handleValidate} error={error.password}></InputGroup>
+                <InputGroup label="Confirm password" for="confirm-password" id="confirm-password" name="confirmPassword" type="password" onChange={handleValidate} error={error.confirmPassword}></InputGroup>
+                <InputGroup label="Full Name" for="full-name" id="full-name" name="fullName" type="text" onChange={handleValidate} error={error.fullName}></InputGroup>
                 <div className='flex flex-col w-full '>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file_input">Upload file</label>
                     <input onChange={(e) => setFile(e.target.files[0])} className="block w-full text-sm text-gray-500 outline-1 rounded outline-gray-300

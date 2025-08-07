@@ -57,8 +57,8 @@ const Login = () => {
         <div className='p-1'>
             <form className='flex flex-col gap-1 p-10 w-[40%] shadow mx-auto mt-20 justify-center items-center rounded' method='post' onSubmit={handleSubmit}>
                 <h1>Login</h1>
-                <InputGroup label="Username" for="username" id="username" name="username" type="text" onKeyUp={handleValidate} error={error.username}></InputGroup>
-                <InputGroup label="Password" for="password" id="password" name="password" type="password" onKeyUp={handleValidate} error={error.password}></InputGroup>
+                <InputGroup label="Username" for="username" id="username" name="username" type="text" onChange={handleValidate} error={error.username}></InputGroup>
+                <InputGroup label="Password" for="password" id="password" name="password" type="password" onChange={handleValidate} error={error.password}></InputGroup>
                 <div className='flex justify-between w-full mt-2'>
                     <button id='submit-btn' type='submit' className='px-7 py-1 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer'>Login</button>
                     <Link to="/register" className=' underline' >Register</Link>
