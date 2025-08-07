@@ -58,7 +58,7 @@ const Quiz = (props) => {
         <div>
             <div className=' w-[60%] mx-auto flex flex-col p-20    '>
                 <div className=' bg-lime-500 px-7 py-5 flex justify-between rounded-t-2xl text-center'>
-                <p>Question {currentQuiz ? currentQuiz.id : collection.quiz_count} of {collection.quiz_count}</p> 
+                <p>Question {currentQuiz ? currentQuizID + 1  : collection.quiz_count} of {collection.quiz_count}</p> 
                     <h3 className=' font-bold '>{currentQuiz ? currentQuiz.question : 'complete'}</h3>
                     
                     <Link to="/" className='hover:text-amber-100'>Cancel</Link>
