@@ -37,7 +37,7 @@ class AuthController extends Controller
         return response()->json([
             'token' => $user->createToken('token')->plainTextToken,
             'user' => $user,
-            'status' => 'success'
+            'status' => true
         ]);
     }
 
@@ -45,7 +45,7 @@ class AuthController extends Controller
     {
         $info = $request->only('username', 'password');
         if (!Auth::attempt($info)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json(['message' => 'The account is not exist', 'status' => false]);
         }
         $user = Auth::user();
         return response()->json([
