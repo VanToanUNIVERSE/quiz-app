@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import InputGroup from '../../InputGroup';
+import InputGroup from '../ui/InputGroup';
 import AnswerGroup from './AnswerGroup';
 
 const SetQuiz = ({ handleCurrentQuestion, currentQuestion, onChange, quizIndex, answers, collapseInput, deleteQuiz }) => {
@@ -20,7 +20,7 @@ const SetQuiz = ({ handleCurrentQuestion, currentQuestion, onChange, quizIndex, 
             <legend>Quiz {quizIndex + 1}</legend>
             <h3 className={` font-bold transition-all duration-300 ${collapse ? ' translate-0' : ' translate-x-48'}`}>{collapse ? currentQuestion : ''}</h3>
             <div className={` transition-all duration-300 overflow-hidden ${collapse ? ' max-h-0' : ' max-h-[1000px]'}`}>
-                <InputGroup value={currentQuestion} onChange={handleCurrentQuestion} label="Question" for="question" id="question" type="text" placeholder="Enter your question" required={true}></InputGroup>
+                <InputGroup value={currentQuestion} onChange={handleCurrentQuestion} label="Question" for="question" id="question" type="text" required={true}></InputGroup>
                 <AnswerGroup answers={answers} onChange={onChange} quizIndex={quizIndex}></AnswerGroup>
             </div>
         </fieldset>

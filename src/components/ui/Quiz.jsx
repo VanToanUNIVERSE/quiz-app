@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Answers from './Answers';
-import '../index.css';
 import { Link } from 'react-router-dom';
 
 const Quiz = (props) => {

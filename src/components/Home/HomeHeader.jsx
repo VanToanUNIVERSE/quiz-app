@@ -6,9 +6,9 @@ const HomeHeader = ({user, setUser}) => {
     return (
         <div className='  flex justify-between items-center text-center'>
             <div className='flex justify-between gap-3 items-center'>
-                <div className=' w-13 h-13 rounded-full'>
+                <Link className=' w-13 h-13 rounded-full' to="/profile">
                     <img alt='Avara' className=' w-full h-full rounded-full' src={`http://127.0.0.1:8000/storage/${user.image}`}></img>
-                </div>
+                </Link>
                 <p className=' font-bold'>{user.fullName || ''}</p>
             </div>
             <h2 className='font-bold text-2xl'>Wellcome to quizzes</h2>

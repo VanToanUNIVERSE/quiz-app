@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const CollectionList = ({collections}) => {
     return (
-        <div className=' w-full md:w-[60%] max-h-[60vh] shadow mx-auto my-5 flex flex-col gap-3 p-3 overflow-hidden scroll-smooth'>
+        <div className=' w-full md:w-[60%] max-h-[60vh] shadow mx-auto my-5 flex flex-col gap-3 p-3 overflow-hidden scroll-smooth backdrop-blur-sm'>
             {collections.map((item) => {
                 return (
                     <div className=' grid grid-cols-3 items-center' key={item.id}>

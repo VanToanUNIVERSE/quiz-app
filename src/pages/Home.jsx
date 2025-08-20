@@ -22,7 +22,7 @@ const Home = () => {
             .catch(err => console.log('Error: ', err))
     }, [page]);
     return (
-        <div className=' h-full w-full absolute p-2 md:p-10'>
+        <div className=' h-full w-full absolute p-2 md:p-10 background-image-random text-gray-200'>
             <HomeHeader user={user} setUser={setUser}></HomeHeader>
             <CollectionList collections={collections}></CollectionList>
             <HomeFooter totalPage={totalPage} setSearchParams={setSearchParams}></HomeFooter>

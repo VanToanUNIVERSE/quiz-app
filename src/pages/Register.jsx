@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import InputGroup from '../components/InputGroup';
+import InputGroup from '../components/ui/InputGroup';
 import { validate } from '../helpers/validators';
-import Message from '../components/Message';
+import Message from '../components/ui/Message';
 
 const Register = () => {
     const [error, setError] = useState({});

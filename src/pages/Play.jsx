@@ -1,6 +1,6 @@
 import React from 'react';
 import '../index.css';
-import Quiz from '../components/Quiz';
+import Quiz from '../components/ui/Quiz';
 import { useSearchParams } from 'react-router-dom';
 
 

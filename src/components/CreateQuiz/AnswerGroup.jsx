@@ -1,5 +1,5 @@
 import React from 'react';
-import InputGroup from '../../InputGroup';
+import InputGroup from '../ui/InputGroup';
 import Answer from './Answer';
 
 const AnswerGroup = ({onChange, quizIndex, answers}) => {

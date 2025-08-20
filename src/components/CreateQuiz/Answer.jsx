@@ -1,5 +1,5 @@
 import React from 'react';
-import InputGroup from '../../InputGroup';
+import InputGroup from '../ui/InputGroup';
 
 const Answer = (props) => {
     return (   
