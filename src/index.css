@@ -74,14 +74,58 @@ h1 {
 
 .chevron-down {
   transform: rotate(45deg);
+  background-color: oklch(92.4% 0.12 95.746);
 }
 
+#login-header::before {
+  content: "";
+  top: 0;
+  left: -40px;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border-top-right-radius: 50%;
+  box-shadow: 15px 0 0 0 oklch(92.4% 0.12 95.746);
+}
+
+#login-header::after {
+  content: "";
+  top: 0;
+  right: -40px;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border-top-left-radius: 50%;
+  box-shadow: -15px 0 0 0 oklch(92.4% 0.12 95.746);
+}
+
+.background-image-random {
+  width: 100%;
+  min-height: 100vh;
+  background-image: url('/background1.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.input-field:focus ~ .label,
+.input-field:valid ~ .label {
+  position: absolute;
+  top: 0px;
+  left: 20px;
+  font-size: 14px;
+  background-color: #eeeeeedc;
+  border-radius: 20px;
+  color: #333;
+  padding: 0 10px;
+}
 
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
   }
-  
- 
 }
