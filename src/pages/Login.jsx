@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import InputGroup from '../components/ui/InputGroup';
 import { validate } from '../helpers/validators';
 import Message from '../components/ui/Message';
+import Loading from '../components/ui/Loading';
 
 const Login = () => {
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState({});
     const [response, setResponse] = useState({
         message: '',
@@ -27,6 +29,7 @@ const Login = () => {
             alert("Vui lòng nhập đúng thông tin.");
             return;
         }
+        setLoading(true);
         fetch('http://127.0.0.1:8000/api/login', {
             method: 'POST',
             headers: {
@@ -39,7 +42,7 @@ const Login = () => {
             })
         }).then(res => res.json())
             .then(data => {
-                setResponse({ message: data.message, status: data.errors });
+                setResponse({ message: data.message, status: data.status });
                 if (!data.errors) {
                     // Lưu user vào localStorage
                     
@@ -52,6 +55,7 @@ const Login = () => {
     };
     const invisible = () => {
         setResponse({ message: '', status: '' });
+        setLoading(false);
     }
     return (
         <div className='p-1 background-image-random'>
@@ -63,10 +67,11 @@ const Login = () => {
                 <InputGroup label="Username" for="username" id="username" name="username" type="text" onChange={handleValidate} error={error.username}></InputGroup>
                 <InputGroup label="Password" for="password" id="password" name="password" type="password" onChange={handleValidate} error={error.password}></InputGroup>
                 <div className='flex justify-between w-full mt-2'>
-                    <button id='submit-btn' type='submit' className='px-7 py-1 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer'>Login</button>
+                    <button id='submit-btn' type='submit' className='px-7 py-1 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer'>{loading ? <Loading></Loading> : 'Login'}</button>
                     <Link to="/register" className=' underline text-white' >Register</Link>
                 </div>
-                <Message onClick={invisible} visible={response.message != '' ? '' : 'invisible'} message={response.message || 'The account has been created'} to={response.errors ? '/register' : '/'}></Message>
+                <Message onClick={invisible} visible={response.message != '' ? '' : 'invisible'} message={response.message || 'The account has been created'} to={response.status ? '/' : '/login'}></Message>
+                <button></button>
             </form>
         </div>
     );

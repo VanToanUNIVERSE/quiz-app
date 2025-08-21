@@ -4,6 +4,7 @@ import SetQuiz from '../components/CreateQuiz/SetQuiz';
 import { Link } from 'react-router-dom';
 
 const CreateQuiz = () => {
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || '');
     const [openedIndex, setOpenedIndex] = useState(0);
     const savedCollection = JSON.parse(localStorage.getItem("collection"));
     const initital = {
@@ -83,7 +84,6 @@ const CreateQuiz = () => {
     }
     console.log(collection);
     const handleSubmit = (e) => {
-
         e.preventDefault()
         fetch('http://127.0.0.1:8000/api/collections', {
             method: 'POST',
@@ -91,7 +91,8 @@ const CreateQuiz = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                collection: collection
+                collection: collection,
+                userId: user.id
             })
         })
             .then(res => res.json())

@@ -5,7 +5,7 @@ import HomeFooter from '../components/Home/HomeFooter';
 import HomeHeader from '../components/Home/HomeHeader';
 
 const Home = () => {
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || '');
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || 'null'));
     const [collections, setCollections] = useState([]);
     const [totalPage, setToTalPage] = useState(0);
     const [searchParams, setSearchParams] = useSearchParams();
