@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../index.css';
 import Quiz from '../components/ui/Quiz';
 import { useSearchParams } from 'react-router-dom';
@@ -9,7 +9,10 @@ const Play = () => {
     const collectionId = searchParams.get('id');
     
     return (
-        <Quiz collectionId={collectionId}></Quiz>
+        <div className='background-image-random min-w-full min-h-full'>
+            <Quiz collectionId={collectionId}></Quiz>
+        </div>
+        
     );
 };
 

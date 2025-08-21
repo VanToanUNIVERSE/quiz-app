@@ -56,6 +56,7 @@ const Register = () => {
             .then(res => res.json())
             .then(data => {
                 setResponse({ message: data.message, status: data.errors });
+                setLoading(false);
                 if (!data.errors) {
                     // Lưu user vào localStorage
                     console.log(data.status);
@@ -68,7 +69,7 @@ const Register = () => {
 
     const invisible = () => {
         setResponse({ message: '', status: '' });
-        setLoading(false);
+        
     }
 
     return (

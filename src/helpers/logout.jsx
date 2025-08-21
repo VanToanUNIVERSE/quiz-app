@@ -1,4 +1,5 @@
-export const logout = (setUser) => {
+export const logout = (setUser, setLoading) => {
+    setLoading(true);
     fetch('http://127.0.0.1:8000/api/logout', {
         method: 'POST',
         headers: {
@@ -12,6 +13,7 @@ export const logout = (setUser) => {
         console.log(data.message);
         setUser('');
         localStorage.clear();
+        setLoading(false);
     })
     .catch(err => console.log('Error:', err));
 };

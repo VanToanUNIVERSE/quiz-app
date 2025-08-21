@@ -43,6 +43,7 @@ const Login = () => {
         }).then(res => res.json())
             .then(data => {
                 setResponse({ message: data.message, status: data.status });
+                setLoading(false);
                 if (!data.errors) {
                     // Lưu user vào localStorage
                     
@@ -55,7 +56,7 @@ const Login = () => {
     };
     const invisible = () => {
         setResponse({ message: '', status: '' });
-        setLoading(false);
+        
     }
     return (
         <div className='p-1 background-image-random'>
