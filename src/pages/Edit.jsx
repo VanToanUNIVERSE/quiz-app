@@ -3,9 +3,11 @@ import InputGroup from '../components/ui/InputGroup';
 import SetQuiz from '../components/CreateQuiz/SetQuiz';
 import { Link, useSearchParams } from 'react-router-dom';
 import Loading from '../components/ui/Loading';
+import Message from '../components/ui/Message';
 
 const Edit = () => {
     const [loading, setLoading] = useState(false);
+    const [response, setResponse] = useState({status: '', message: ''});
     localStorage.removeItem("collection");
     const [searchParams] = useSearchParams();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || '');
@@ -50,7 +52,7 @@ const Edit = () => {
                 setLoading(false);
             })
             .catch(err => console.log('Error when fetch: ', err));
-    }, [id]);
+    }, [id, savedCollection]);
     useEffect(() => {
         localStorage.setItem('collection', JSON.stringify(collection));
     }, [collection]);
@@ -104,22 +106,32 @@ const Edit = () => {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        fetch('http://127.0.0.1:8000/api/collections', {
-            method: 'POST',
+        fetch(`http://127.0.0.1:8000/api/collections/${id}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 collection: collection,
-                userId: user.id
+                userId: user.id,
+                collectionId: id
             })
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-
+                setResponse({
+                    status: data.status,
+                    message: data.message,
+                    
+                });
             })
             .catch(err => console.log('Error: ', err));
+    }
+    const makeInvisible = () => {
+        setResponse({
+            message: '',
+            status: ''
+        })
     }
     console.log(collection);
     return (
@@ -136,6 +148,7 @@ const Edit = () => {
                 <button onClick={addQuiz} className=' m-3 px-2 py-1 text-gray-200 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer'>More Quiz</button>
                 <button type='submit' className=' m-3 px-2 py-1 text-gray-200 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer'>Save</button>
             </form>
+           
         </div>
     );
 };
