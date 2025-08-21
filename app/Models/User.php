@@ -11,4 +11,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable; 
     protected $fillable = ['username', 'password', 'fullName', 'image'];
+    public function collections() {
+        return $this->hasMany(Collection::class);
+    }
 }

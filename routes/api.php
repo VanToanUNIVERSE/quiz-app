@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CollectionController;
 use App\Http\Controllers\Api\QuizController;
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +29,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 Route::apiResource('collections', CollectionController::class);
 Route::apiResource('quizzes', QuizController::class);
+
+Route::get('/users/showCollections', [UserController::class, 'showCollections']);
 

@@ -52,7 +52,7 @@ class AuthController extends Controller
             'token' => $user->createToken('token')->plainTextToken,
             'message' => 'Login success',
             'user' => $user,
-            'status' => 'success'
+            'status' => true
         ]);
     }
 
