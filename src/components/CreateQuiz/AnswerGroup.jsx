@@ -8,7 +8,7 @@ const AnswerGroup = ({onChange, quizIndex, answers}) => {
             <div>
                 {answers.map((item, index) => {
                     return (
-                        <Answer value={item.content} checked={item.correct === 'true'} name={quizIndex} onChange={(e) => onChange(e, quizIndex, index)} key={index} label={`Answer ${index + 1}`} for={`answer-${index + 1}`} id={`answer-${index + 1}`} type="text" placeholder={`Enter your answer ${index + 1}`}></Answer>)
+                        <Answer value={item.content} checked={item.correct === 'true' || item.correct === 1} name={quizIndex} onChange={(e) => onChange(e, quizIndex, index)} key={index} label={`Answer ${index + 1}`} for={`answer-${index + 1}`} id={`answer-${index + 1}`} type="text" placeholder={`Enter your answer ${index + 1}`}></Answer>)
                 })}
             </div>
         </div>

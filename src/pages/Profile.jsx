@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import StyledLink from '../components/ui/StyledLink';
+import Loading from '../components/ui/Loading';
 import { Navigate } from 'react-router-dom';
 
 const Profile = () => {
+    const [loading, setLoading] = useState(false);
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || '');
     const [collections, setCollections] = useState([]);
     useEffect(() => {
         if (user === '') {
             return;
         }
+        setLoading(true);
         fetch(`http://127.0.0.1:8000/api/users/showCollections?userId=${user.id}`).then(res => res.json()).then(data => {
             console.log(data.collections);
             setCollections(data.collections);
+            setLoading(false);
         });
     }, [user]);
     if (user === '') {
@@ -19,6 +23,7 @@ const Profile = () => {
     }
     return (
         <div className='background-image-random p-10 text-gray-200'>
+            {loading ? <Loading></Loading> : ''}
             <StyledLink name="Back" to="/"></StyledLink>
             <h2>Your collections: </h2>
             <table className='table-auto w-full md:w-[50%] border-collapse shadow backdrop-blur-2xl'>
@@ -35,9 +40,7 @@ const Profile = () => {
                                 <tr key={item.id}>
                                     <td className="p-4 text-left">{item.name}</td>
                                     <td className="p-4 text-center">
-                                        <button className="px-3 py-1 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer">
-                                            Edit
-                                        </button>
+                                        <StyledLink to={`/edit?id=${item.id}`} name="Edit"></StyledLink>
                                     </td>
                                 </tr>
                             )
@@ -47,7 +50,6 @@ const Profile = () => {
                     }
 
                 </tbody>
-
             </table>
         </div>
     );

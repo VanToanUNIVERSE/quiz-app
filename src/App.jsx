@@ -8,6 +8,7 @@ import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import CreateQuiz from './pages/CreateQuiz.jsx'
 import Profile from './pages/Profile.jsx'
+import Edit from './pages/Edit.jsx'
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/register" element={<Register></Register>}></Route>
         <Route path='/create-quiz' element={<CreateQuiz></CreateQuiz>}></Route>
         <Route path='/profile' element={<Profile></Profile>}></Route>
+        <Route path='/edit' element={<Edit></Edit>}></Route>
       </Routes>
     </BrowserRouter>
   )
