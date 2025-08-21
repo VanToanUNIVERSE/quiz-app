@@ -52,13 +52,13 @@ class CollectionController extends Controller
         ]);
 
         $quizzes = $collection['quizzes'];
-        foreach($quizzes as $quiz) {
+        foreach ($quizzes as $quiz) {
             $newQuiz = Quiz::create([
                 'question' => $quiz['question'],
                 'collection_id' => $newCl->id
             ]);
             $answers = $quiz['answers'];
-            foreach($answers as $answer) {
+            foreach ($answers as $answer) {
                 Answer::create([
                     'content' => $answer['content'],
                     'correct' => $answer['correct'] === 'true' ? 1 : 0,
@@ -68,7 +68,7 @@ class CollectionController extends Controller
         }
 
         return response()->json([
-            'message' => $answers
+            'message' => 'Created'
         ]);
     }
 
@@ -80,7 +80,7 @@ class CollectionController extends Controller
         $data = Collection::withCount('quizzes')->find($request->id);
         return response()->json([
             'status' => 'success',
-            'message' => 'List of collections',
+            'message' => 'Collection ' . $data->id,
             'data' => new CollectionResource($data)
         ]);
     }
@@ -88,10 +88,7 @@ class CollectionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
+    public function edit(Request $request) {}
 
     /**
      * Update the specified resource in storage.
@@ -99,11 +96,61 @@ class CollectionController extends Controller
     public function update(Request $request)
     {
         $userId = $request->userId;
-        $collection = $request->collection;
+        $oldCollection = Collection::find($request->collectionId);
+        $newCollection = $request->collection;
+
+
+        $oldCollection->update([
+            'name' => $newCollection['name']
+        ]);
+
+
+
+        $oldQuizzes = $oldCollection->quizzes;
+        $newQuizzes = $newCollection['quizzes'];
+        if (count($newQuizzes) != count($oldQuizzes)) {
+            if (count($newQuizzes) > count($oldQuizzes)) {
+                for ($i = count($oldQuizzes); $i < count($newQuizzes); $i++) {
+                    $newQuiz = Quiz::create([
+                        'question' => $newQuizzes[$i]['question'],
+                        'collection_id' => $request->collectionId
+                    ]);
+                    $answers = $newQuizzes[$i]['answers'];
+                    foreach ($answers as $answer) {
+                        Answer::create([
+                            'content' => $answer['content'],
+                            'correct' => $answer['correct'] === 'true' || $answer['correct'] === 1 ? 1 : 0,
+                            'quiz_id' => $newQuiz->id
+                        ]);
+                    }
+                }
+            }
+            if (count($newQuizzes) < count($oldQuizzes)) {
+                for ($i = count($newQuizzes); $i < count($oldQuizzes); $i++) {
+                    $oldQuizzes[$i]->delete();
+                }
+            }
+        }
+        for ($i = 0; $i < count($oldQuizzes); $i++) {
+            $oldQuizzes[$i]->update($newQuizzes[$i]);
+            $oldAnswers = $oldQuizzes[$i]->answers;
+            $newAnswers = $newQuizzes[$i]['answers'];
+            for ($j = 0; $j < count($oldAnswers); $j++) {
+                $oldAnswers[$j]->update([
+                    'content' => $newAnswers[$j]['content'],
+                    'correct' => $newAnswers[$j]['correct'] === 'true' || $newAnswers[$j]['correct'] === 1 ? 1 : 0,
+                ]);
+            }
+        }
+        return response()->json([
+            'message' => 'Update completed',
+            'status' => true
+        ]);
+        /* $collection = $request->collection;
         $newCl = Collection::create([
             'name' => $collection['name'],
             'user_id' => $userId
-        ]);
+        ]); 
 
         $quizzes = $collection['quizzes'];
         foreach($quizzes as $quiz) {
@@ -123,7 +170,7 @@ class CollectionController extends Controller
 
         return response()->json([
             'message' => $answers
-        ]);
+        ]); */
     }
 
     /**
