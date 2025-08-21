@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import InputGroup from '../components/ui/InputGroup';
 import { validate } from '../helpers/validators';
 import Message from '../components/ui/Message';
+import Loading from '../components/ui/Loading';
 
 const Register = () => {
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState({});
     const [form, setForm] = useState({
         username: '',
@@ -43,6 +45,7 @@ const Register = () => {
             alert("Please fix the errors");
             return;
         }
+        setLoading(true);
         fetch('http://127.0.0.1:8000/api/register', {
             method: 'POST',
             headers: {
@@ -65,11 +68,12 @@ const Register = () => {
 
     const invisible = () => {
         setResponse({ message: '', status: '' });
+        setLoading(false);
     }
 
     return (
         <div className='p-1 background-image-random'>
-            <form method='post' onSubmit={handleSubmit} className=' bg-transparent border border-amber-50 backdrop-blur-sm relative flex flex-col gap-5 p-10 pt-20 w-[40%] shadow mx-auto m-10 justify-center items-center rounded' encType="multipart/form-data">
+            <form method='post' onSubmit={handleSubmit} className=' bg-transparent border border-amber-50 backdrop-blur-sm relative flex flex-col gap-5 p-10 pt-20 w-full lg:w-[40%] shadow mx-auto m-10 justify-center items-center rounded' encType="multipart/form-data">
                 <div id='login-header' className=' bg-amber-200 absolute top-0 start-[50%] -translate-x-[50%] p-3 rounded-b-2xl'>
                     <span className=' text-3xl'>Register</span>
                 </div>
@@ -91,7 +95,7 @@ const Register = () => {
                         dark:hover:file:bg-blue-400" id="image" name='image' type="file" />
                 </div>
                 <div className='flex justify-between w-full mt-2'>
-                    <button type='submit' className='px-7 py-1 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer'>Register</button>
+                    <button type='submit' className='px-7 py-1 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer'>{loading ? <Loading></Loading> : 'Register'}</button>
                     <Link className=' underline text-white' to="/login">Login</Link>
                 </div>
                 <Message onClick={invisible} visible={response.message != '' ? '' : 'invisible'} message={response.message || 'The account has been created'} to={response.status ? '/register' : '/'}></Message>
