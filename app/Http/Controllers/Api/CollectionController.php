@@ -68,7 +68,8 @@ class CollectionController extends Controller
         }
 
         return response()->json([
-            'message' => 'Created'
+            'message' => 'Created',
+            'status' => true
         ]);
     }
 
@@ -97,6 +98,9 @@ class CollectionController extends Controller
     {
         $userId = $request->userId;
         $oldCollection = Collection::find($request->collectionId);
+        $request->validate([
+            'collection.name' => 'required|max:255'
+        ]);
         $newCollection = $request->collection;
 
 
