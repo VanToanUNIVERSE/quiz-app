@@ -8,7 +8,7 @@ import Message from '../components/ui/Message';
 const Edit = () => {
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState({ status: '', message: '' });
-    localStorage.removeItem("collection");
+
     const [searchParams] = useSearchParams();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || '');
     const [openedIndex, setOpenedIndex] = useState(0);
@@ -39,20 +39,21 @@ const Edit = () => {
     }
     const [collection, setCollection] = useState(savedCollection || initital);
     useEffect(() => {
+        if (!savedCollection) {
         setLoading(true);
         fetch(`http://127.0.0.1:8000/api/collections/show?id=${id}`)
             .then(res => res.json())
             .then(data => {
-                if (!savedCollection) {
+                 
                     setCollection({
                         name: data.data.name || "",
                         quizzes: data.data.quizzes || []
                     });
-                }
+                
                 setLoading(false);
             })
             .catch(err => console.log('Error when fetch: ', err));
-    }, [id, savedCollection]);
+    }}, [id, savedCollection]);
     useEffect(() => {
         localStorage.setItem('collection', JSON.stringify(collection));
     }, [collection]);
@@ -105,7 +106,8 @@ const Edit = () => {
         });
     }
     const handleSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        setLoading(true);
         fetch(`http://127.0.0.1:8000/api/collections/${id}`, {
             method: 'PUT',
             headers: {
@@ -124,6 +126,7 @@ const Edit = () => {
                     status: data.status,
                     message: data.message,
                 });
+                setLoading(false);
             })
             .catch(err => console.log('Error: ', err));
     }
@@ -131,7 +134,7 @@ const Edit = () => {
     return (
         <div className='p-10 background-image-random text-white'>
             {loading ? <Loading></Loading> : ''}
-            <h2>Create Your Quiz</h2> <Link to="/profile" type='submit' className=' m-3 px-2 py-1 text-gray-200 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer absolute top-0 right-0'>Back</Link>
+            <h2>Create Your Quiz</h2> <Link to="/profile" type='submit' className=' m-3 px-2 py-1 text-gray-200 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer absolute top-0 right-0'><button onClick={() => localStorage.removeItem("collection")}>Back</button></Link>
             <form className='w-[70%]' onSubmit={handleSubmit}>
                 <InputGroup value={collection.name} onChange={handleNameChange} label="Collection name" for="collection-name" id="collection-name" type="text" required={true}></InputGroup>
                 {collection.quizzes.map((item, index) => {

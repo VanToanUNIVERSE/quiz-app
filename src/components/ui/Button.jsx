@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Button = ({name, color}) => {
+const Button = ({name, color,hover, onClick}) => {
     return (
-        <button className={`px-7 py-1 ${color ?? 'bg-blue-400'} hover:bg-blue-400 rounded cursor-pointer`}>{name}</button>
+        <button onClick={onClick} className={`px-7 ${color ?? 'bg-blue-400'} ${hover ? `hover:${hover}` : 'hover:bg-blue-300'} rounded cursor-pointer`}>{name}</button>
     );
 };
 

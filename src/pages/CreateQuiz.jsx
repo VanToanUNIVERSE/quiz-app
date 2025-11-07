@@ -114,7 +114,7 @@ const CreateQuiz = () => {
     console.log(response.message);
     return (
         <div className='p-10 background-image-random text-white relative'>
-            <h2>Create Your Quiz</h2> <Link to="/" type='submit' className=' m-3 px-2 py-1 text-gray-200 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer absolute top-0 right-0'>Back</Link>
+            <h2>Create Your Quiz</h2> <Link to="/" type='submit' className=' m-3 px-2 py-1 text-gray-200 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer absolute top-0 right-0'><button onClick={() => localStorage.removeItem("collection")}>Back</button></Link>
             <form className='w-[70%]' onSubmit={handleSubmit}>
                 <InputGroup value={collection.name} onChange={handleNameChange} label="Collection name" for="collection-name" id="collection-name" type="text" required={true}></InputGroup>
                 {collection.quizzes.map((item, index) => {
