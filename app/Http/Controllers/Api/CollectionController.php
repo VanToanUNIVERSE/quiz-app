@@ -180,8 +180,12 @@ class CollectionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(String $id)
     {
-        //
+        $collection = Collection::find($id);
+        $collection->delete();
+        return response()-> json([
+            'message' => 'Collection '.$collection->name.' has been deleted'
+        ]);
     }
 }
