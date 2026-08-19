@@ -21,14 +21,22 @@ use App\Http\Controllers\Api\UserController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-
-
-Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
-Route::apiResource('collections', CollectionController::class);
-Route::apiResource('quizzes', QuizController::class);
+Route::post('/register', [AuthController::class, 'register']);
+Route::apiResource('collections', CollectionController::class)->only(['index', 'show']);
+Route::apiResource('quizzes', QuizController::class)->only(['index', 'show']);
 
-Route::get('/users/showCollections', [UserController::class, 'showCollections']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::apiResource('collections', CollectionController::class)->except(['index', 'show']);
+    Route::apiResource('quizzes', QuizController::class)->except(['index', 'show']);
+    Route::get('/users/showCollections', [UserController::class, 'showCollections']);
+});
+
+
+
+
+
+
+
 
