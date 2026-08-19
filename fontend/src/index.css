@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100..900&display=swap');
+@import "tailwindcss";
+
+:root {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  box-sizing: border-box;
+}
+
+
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: inherit;
+  background-color: #eee;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+
+
+
+.answer {
+  border: 2px solid #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10px;
+  height: 20px;
+  padding: 20px;
+  border-radius: 50%;
+}
+
+.shadow {
+  box-shadow: 0px 0px 25px #9e9c9c;
+}
+
+.big-arrow-down {
+  width: 20px;
+  height: 20px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid black;
+  transform: rotate(0deg);
+}
+
+.chevron {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-right: 3px solid black;
+  border-bottom: 3px solid black;
+}
+
+.chevron:hover {
+  @apply border-blue-400
+}
+
+.chevron-down {
+  transform: rotate(45deg);
+  background-color: oklch(92.4% 0.12 95.746);
+}
+
+#login-header::before {
+  content: "";
+  top: 0;
+  left: -40px;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border-top-right-radius: 50%;
+  box-shadow: 15px 0 0 0 oklch(92.4% 0.12 95.746);
+}
+
+#login-header::after {
+  content: "";
+  top: 0;
+  right: -40px;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border-top-left-radius: 50%;
+  box-shadow: -15px 0 0 0 oklch(92.4% 0.12 95.746);
+}
+
+.background-image-random {
+  width: 100%;
+  min-height: 100vh;
+  background-image: url('/background1.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.input-field:focus ~ .label,
+.input-field:valid ~ .label {
+  position: absolute;
+  top: 0px;
+  left: 20px;
+  font-size: 14px;
+  background-color: #eeeeeedc;
+  border-radius: 20px;
+  color: #333;
+  padding: 0 10px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+}
