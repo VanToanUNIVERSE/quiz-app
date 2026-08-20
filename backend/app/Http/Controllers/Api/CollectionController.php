@@ -8,6 +8,7 @@ use App\Models\Answer;
 use App\Models\Collection;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CollectionController extends Controller
 {
@@ -33,27 +34,27 @@ class CollectionController extends Controller
     {
         $userId = $request->user()->id;
         $collection = $request->collection;
-        $newCl = Collection::create([
-            'name' => $collection['name'],
-            'user_id' => $userId
-        ]);
-
         $quizzes = $collection['quizzes'];
-        foreach ($quizzes as $quiz) {
-            $newQuiz = Quiz::create([
-                'question' => $quiz['question'],
-                'collection_id' => $newCl->id
+        DB::transaction(function () use ($userId, $collection, $quizzes) {
+            $newCl = Collection::create([
+                'name' => $collection['name'],
+                'user_id' => $userId
             ]);
-            $answers = $quiz['answers'];
-            foreach ($answers as $answer) {
-                Answer::create([
-                    'content' => $answer['content'],
-                    'correct' => $answer['correct'] === 'true' ? 1 : 0,
-                    'quiz_id' => $newQuiz->id
+            foreach ($quizzes as $quiz) {
+                $newQuiz = Quiz::create([
+                    'question' => $quiz['question'],
+                    'collection_id' => $newCl->id
                 ]);
+                $answers = $quiz['answers'];
+                foreach ($answers as $answer) {
+                    Answer::create([
+                        'content' => $answer['content'],
+                        'correct' => $answer['correct'] === 'true' ? 1 : 0,
+                        'quiz_id' => $newQuiz->id
+                    ]);
+                }
             }
-        }
-
+        });
         return response()->json([
             'message' => 'Created',
             'status' => true
@@ -138,12 +139,12 @@ class CollectionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(String $id)
+    public function destroy(string $id)
     {
         $collection = Collection::find($id);
         $collection->delete();
-        return response()-> json([
-            'message' => 'Collection '.$collection->name.' has been deleted'
+        return response()->json([
+            'message' => 'Collection ' . $collection->name . ' has been deleted'
         ]);
     }
 }
