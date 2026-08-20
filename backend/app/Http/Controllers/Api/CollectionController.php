@@ -31,7 +31,7 @@ class CollectionController extends Controller
 
     public function store(Request $request)
     {
-        $userId = $request->userId;
+        $userId = $request->user()->id;
         $collection = $request->collection;
         $newCl = Collection::create([
             'name' => $collection['name'],
