@@ -86,58 +86,52 @@ class CollectionController extends Controller
      * Show the form for editing the specified resource.
      */
 
-    public function update(Request $request)
+    public function update(Request $request, Collection $collection)
     {
-        $userId = $request->userId;
-        $oldCollection = Collection::find($request->collectionId);
         $request->validate([
-            'collection.name' => 'required|max:255'
+            'collection' => 'required|array',
+            'collection.name' => 'required|string|max:255',
+            'collection.quizzes' => 'required|array',
+            'collection.quizzes.*.question' => 'required|string|max:255',
+            'collection.quizzes.*.answers' => 'required|array',
+            'collection.quizzes.*.answers.*.content' => 'required|string|max:255',
+            'collection.quizzes.*.answers.*.correct' => 'required|in:true,false',
         ]);
+        $userId = $request->user()->id;
+
+        if ($collection->user_id != $userId) {
+            return response()->json([
+                'message' => 'You cannot edit this collection'
+            ], 403);
+        }
         $newCollection = $request->collection;
 
+        DB::transaction(function () use ($collection, $newCollection) {
+            //1.cập nhật name
+            $collection->update([
+                'name' => $newCollection['name']
+            ]);
+            //2. xóa quiz cũ
+            $collection->quizzes()->delete();
 
-        $oldCollection->update([
-            'name' => $newCollection['name']
-        ]);
-
-
-
-        $oldQuizzes = $oldCollection->quizzes;
-        $newQuizzes = $newCollection['quizzes'];
-        if (count($newQuizzes) != count($oldQuizzes)) {
-            if (count($newQuizzes) > count($oldQuizzes)) {
-                for ($i = count($oldQuizzes); $i < count($newQuizzes); $i++) {
-                    $newQuiz = Quiz::create([
-                        'question' => $newQuizzes[$i]['question'],
-                        'collection_id' => $request->collectionId
-                    ]);
-                    $answers = $newQuizzes[$i]['answers'];
-                    foreach ($answers as $answer) {
-                        Answer::create([
-                            'content' => $answer['content'],
-                            'correct' => $answer['correct'] === 'true' || $answer['correct'] === 1 ? 1 : 0,
-                            'quiz_id' => $newQuiz->id
-                        ]);
-                    }
-                }
-            }
-            if (count($newQuizzes) < count($oldQuizzes)) {
-                for ($i = count($newQuizzes); $i < count($oldQuizzes); $i++) {
-                    $oldQuizzes[$i]->delete();
-                }
-            }
-        }
-        for ($i = 0; $i < count($oldQuizzes); $i++) {
-            $oldQuizzes[$i]->update($newQuizzes[$i]);
-            $oldAnswers = $oldQuizzes[$i]->answers;
-            $newAnswers = $newQuizzes[$i]['answers'];
-            for ($j = 0; $j < count($oldAnswers); $j++) {
-                $oldAnswers[$j]->update([
-                    'content' => $newAnswers[$j]['content'],
-                    'correct' => $newAnswers[$j]['correct'] === 'true' || $newAnswers[$j]['correct'] === 1 ? 1 : 0,
+            //3. tạo lại
+            $quizzes = $newCollection['quizzes'];
+            foreach ($quizzes as $quiz) {
+                $newQuiz = Quiz::create([
+                    'question' => $quiz['question'],
+                    'collection_id' => $collection->id
                 ]);
+                $answers = $quiz['answers'];
+                foreach ($answers as $answer) {
+                    Answer::create([
+                        'content' => $answer['content'],
+                        'correct' => $answer['correct'] === 'true' ? 1 : 0,
+                        'quiz_id' => $newQuiz->id
+                    ]);
+                }
             }
-        }
+
+        });
         return response()->json([
             'message' => 'Update completed',
             'status' => true
