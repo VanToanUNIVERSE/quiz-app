@@ -32,6 +32,15 @@ class CollectionController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'collection' => 'required|array',
+            'collection.name' => 'required|string|max:255',
+            'collection.quizzes' => 'required|array',
+            'collection.quizzes.*.question' => 'required|string|max:255',
+            'collection.quizzes.*.answers' => 'required|array',
+            'collection.quizzes.*.answers.*.content' => 'required|string|max:255',
+            'collection.quizzes.*.answers.*.correct' => 'required|in:true,false',
+        ]);
         $userId = $request->user()->id;
         $collection = $request->collection;
         $quizzes = $collection['quizzes'];
