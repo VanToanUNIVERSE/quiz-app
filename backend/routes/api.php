@@ -18,15 +18,15 @@ use App\Http\Controllers\Api\UserController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::apiResource('collections', CollectionController::class)->only(['index', 'show']);
 Route::apiResource('quizzes', QuizController::class)->only(['index', 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('collections', CollectionController::class)->except(['index', 'show']);
     Route::apiResource('quizzes', QuizController::class)->except(['index', 'show']);
