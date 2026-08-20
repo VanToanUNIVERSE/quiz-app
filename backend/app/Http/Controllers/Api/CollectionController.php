@@ -8,8 +8,6 @@ use App\Models\Answer;
 use App\Models\Collection;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use PHPUnit\TestRunner\TestResult\Collector;
 
 class CollectionController extends Controller
 {
@@ -31,14 +29,6 @@ class CollectionController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $userId = $request->userId;
@@ -143,31 +133,6 @@ class CollectionController extends Controller
             'message' => 'Update completed',
             'status' => true
         ]);
-        /* $collection = $request->collection;
-        $newCl = Collection::create([
-            'name' => $collection['name'],
-            'user_id' => $userId
-        ]); 
-
-        $quizzes = $collection['quizzes'];
-        foreach($quizzes as $quiz) {
-            $newQuiz = Quiz::create([
-                'question' => $quiz['question'],
-                'collection_id' => $newCl->id
-            ]);
-            $answers = $quiz['answers'];
-            foreach($answers as $answer) {
-                Answer::create([
-                    'content' => $answer['content'],
-                    'correct' => $answer['correct'] === 'true' ? 1 : 0,
-                    'quiz_id' => $newQuiz->id
-                ]);
-            }
-        }
-
-        return response()->json([
-            'message' => $answers
-        ]); */
     }
 
     /**
