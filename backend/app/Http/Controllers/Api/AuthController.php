@@ -16,9 +16,7 @@ class AuthController extends Controller
             'username' => 'required|unique:users|string|max:255|min: 5',
             'password' => 'required|string|min:5',
             'fullName' => 'required|string|min:5',
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
-        ], [
-            'image.required' => 'Please select a picture'
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
         $imagePath = null;
