@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CollectionController;
-use App\Http\Controllers\Api\QuizController;
 use App\Http\Controllers\Api\UserController;
 
 /*
@@ -21,7 +20,6 @@ use App\Http\Controllers\Api\UserController;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::apiResource('collections', CollectionController::class)->only(['index', 'show']);
-Route::apiResource('quizzes', QuizController::class)->only(['index', 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -29,7 +27,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('collections', CollectionController::class)->except(['index', 'show']);
-    Route::apiResource('quizzes', QuizController::class)->except(['index', 'show']);
     Route::get('/users/showCollections', [UserController::class, 'showCollections']);
 });
 
