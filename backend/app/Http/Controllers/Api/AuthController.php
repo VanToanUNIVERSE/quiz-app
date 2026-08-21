@@ -44,7 +44,7 @@ class AuthController extends Controller
     {
         $info = $request->only('username', 'password');
         if (!Auth::attempt($info)) {
-            return response()->json(['message' => 'The account is not exist', 'status' => false]);
+            return response()->json(['message' => 'Username or password is incorrect', 'status' => false], 401);
         }
         $user = Auth::user();
         return response()->json([
