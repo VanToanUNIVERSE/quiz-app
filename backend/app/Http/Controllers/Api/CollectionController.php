@@ -75,6 +75,7 @@ class CollectionController extends Controller
      */
     public function show(Collection $collection)
     {
+        $collection->loadCount('quizzes');
         return response()->json([
             'status' => 'success',
             'message' => 'Collection ' . $collection->id,
