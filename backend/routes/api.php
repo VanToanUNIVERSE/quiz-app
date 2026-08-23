@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\UserController;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::apiResource('collections', CollectionController::class)->only(['index', 'show']);
+Route::get('/collections/{collection}/play', [CollectionController::class, 'play']);
 Route::post('/collections/{collection}/submit', [CollectionController::class, 'submit']);
 
 Route::middleware('auth:sanctum')->group(function () {

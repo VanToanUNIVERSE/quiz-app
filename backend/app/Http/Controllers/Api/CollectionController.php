@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CollectionResource;
+use App\Http\Resources\PlayCollectionResource;
 use App\Models\Answer;
 use App\Models\Collection;
 use App\Models\Quiz;
@@ -83,6 +84,16 @@ class CollectionController extends Controller
         ]);
     }
 
+    public function play(Collection $collection)
+    {
+        $collection->loadCount('quizzes');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Collection ' . $collection->id,
+            'data' => new PlayCollectionResource($collection)
+        ]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -151,36 +162,37 @@ class CollectionController extends Controller
         ]);
     }
 
-    public function submit(Request $request, Collection $collection) {
+    public function submit(Request $request, Collection $collection)
+    {
         $request->validate([
             'answers' => 'required|array',
             'answers.*.answer_id' => 'required|integer',
             'answers.*.quiz_id' => 'required|integer'
         ]);
         $score = 0;
-       
+
         foreach ($request->answers as $item) {
             $answer = Answer::find($item['answer_id']);
             //answer nay co ton tai hay k
-            if(!$answer) {
+            if (!$answer) {
                 continue;
             }
             //answer nay co thuoc quiz dang lam hay k
-            if($answer->quiz_id != $item['quiz_id']) {
+            if ($answer->quiz_id != $item['quiz_id']) {
                 continue;
-            }   
+            }
             //kiem tra xem quiz ma clien gui co thuoc collection khong
             $yes = false;
-            foreach($collection->quizzes as $quiz) {
-                if($quiz->id == $item['quiz_id']) {
+            foreach ($collection->quizzes as $quiz) {
+                if ($quiz->id == $item['quiz_id']) {
                     $yes = true;
                 }
             }
-            if(!$yes) {
+            if (!$yes) {
                 continue;
             }
             //neu hop le kiem tra xem dap an client gui co dung hay k
-            if($answer->correct == 1) {
+            if ($answer->correct == 1) {
                 $score++;
             }
         }
