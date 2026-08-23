@@ -150,4 +150,47 @@ class CollectionController extends Controller
             'message' => 'Collection ' . $collection->name . ' has been deleted'
         ]);
     }
+
+    public function submit(Request $request, Collection $collection) {
+        $request->validate([
+            'answers' => 'required|array',
+            'answers.*.answer_id' => 'required|integer',
+            'answers.*.quiz_id' => 'required|integer'
+        ]);
+        $score = 0;
+       
+        foreach ($request->answers as $item) {
+            $answer = Answer::find($item['answer_id']);
+            //answer nay co ton tai hay k
+            if(!$answer) {
+                continue;
+            }
+            //answer nay co thuoc quiz dang lam hay k
+            if($answer->quiz_id != $item['quiz_id']) {
+                continue;
+            }   
+            //kiem tra xem quiz ma clien gui co thuoc collection khong
+            $yes = false;
+            foreach($collection->quizzes as $quiz) {
+                if($quiz->id == $item['quiz_id']) {
+                    $yes = true;
+                }
+            }
+            if(!$yes) {
+                continue;
+            }
+            //neu hop le kiem tra xem dap an client gui co dung hay k
+            if($answer->correct == 1) {
+                $score++;
+            }
+        }
+
+        //tra ve diem so va total
+        $total = $collection->quizzes->count();
+        return response()->json([
+            'score' => $score,
+            'total' => $total
+        ]);
+
+    }
 }

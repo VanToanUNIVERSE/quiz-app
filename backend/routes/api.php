@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\UserController;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::apiResource('collections', CollectionController::class)->only(['index', 'show']);
+Route::post('/collections/{collection}/submit', [CollectionController::class, 'submit']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -28,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('collections', CollectionController::class)->except(['index', 'show']);
     Route::get('/users/showCollections', [UserController::class, 'showCollections']);
+    
 });
 
 
