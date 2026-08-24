@@ -9,6 +9,7 @@ const CreateQuiz = () => {
     const [response, setResponse] = useState({status: false, message: ''});
     const [openedIndex, setOpenedIndex] = useState(0);
     const savedCollection = JSON.parse(localStorage.getItem("collection"));
+    const token = localStorage.getItem('token');
     const initital = {
         name: '',
         quizzes: [
@@ -91,7 +92,8 @@ const CreateQuiz = () => {
             method: 'POST',
             headers: {
                 'Accept' : 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
                 collection: collection,
