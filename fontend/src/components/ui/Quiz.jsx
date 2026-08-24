@@ -8,7 +8,7 @@ const Quiz = (props) => {
     const [collection, setCollection] = useState({});
     useEffect(() => {
         setLoading(true);
-        fetch(`http://127.0.0.1:8000/api/collections/${props.collectionId}/play`)
+        fetch(`${import.meta.env.VITE_API_URL}/api/collections/${props.collectionId}/play`)
             .then(res => res.json())
             .then(data => {
                 setCollection(data.data);
@@ -43,7 +43,7 @@ const Quiz = (props) => {
     }
 
     const handleSubmit = () => {
-        fetch(`http://127.0.0.1:8000/api/collections/${props.collectionId}/submit`, {
+        fetch(`${import.meta.env.VITE_API_URL}/api/collections/${props.collectionId}/submit`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

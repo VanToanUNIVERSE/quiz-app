@@ -41,7 +41,7 @@ const Edit = () => {
     useEffect(() => {
         if (!savedCollection) {
         setLoading(true);
-        fetch(`http://127.0.0.1:8000/api/collections/show?id=${id}`)
+            fetch(`${import.meta.env.VITE_API_URL}/api/collections/${id}`)
             .then(res => res.json())
             .then(data => {
                  

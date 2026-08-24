@@ -14,7 +14,7 @@ const Home = () => {
     const page = parseInt(searchParams.get('page')) || 1;
     useEffect(() => {
         setLoading(true);
-        fetch(`http://127.0.0.1:8000/api/collections?page=${page}`)
+        fetch(`${import.meta.env.VITE_API_URL}/api/collections?page=${page}`)
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'success') {

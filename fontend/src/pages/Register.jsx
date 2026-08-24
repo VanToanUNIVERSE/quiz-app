@@ -46,7 +46,7 @@ const Register = () => {
             return;
         }
         setLoading(true);
-        fetch('http://127.0.0.1:8000/api/register', {
+        fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

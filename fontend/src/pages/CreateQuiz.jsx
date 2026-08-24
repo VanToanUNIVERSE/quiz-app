@@ -87,7 +87,7 @@ const CreateQuiz = () => {
     console.log(collection);
     const handleSubmit = (e) => {
         e.preventDefault()
-        fetch('http://127.0.0.1:8000/api/collections', {
+        fetch(`${import.meta.env.VITE_API_URL}/api/collections`, {
             method: 'POST',
             headers: {
                 'Accept' : 'application/json',
