@@ -38,22 +38,29 @@ const Edit = () => {
         ]
     }
     const [collection, setCollection] = useState(savedCollection || initital);
+    const token = localStorage.getItem('token');
     useEffect(() => {
         if (!savedCollection) {
-        setLoading(true);
+            setLoading(true);
             fetch(`${import.meta.env.VITE_API_URL}/api/collections/${id}`)
-            .then(res => res.json())
-            .then(data => {
-                 
+                .then(res => res.json())
+                .then(data => {
                     setCollection({
                         name: data.data.name || "",
-                        quizzes: data.data.quizzes || []
+                        quizzes: (data.data.quizzes || []).map(quiz => ({
+                            ...quiz,
+                            answers: quiz.answers.map(answer => ({
+                                ...answer,
+                                correct: answer.correct == 1 ? "true" : "false"   // số → chuỗi
+                            }))
+                        }))
                     });
-                
-                setLoading(false);
-            })
-            .catch(err => console.log('Error when fetch: ', err));
-    }}, [id, savedCollection]);
+
+                    setLoading(false);
+                })
+                .catch(err => console.log('Error when fetch: ', err));
+        }
+    }, [id, savedCollection]);
     useEffect(() => {
         localStorage.setItem('collection', JSON.stringify(collection));
     }, [collection]);
@@ -108,11 +115,12 @@ const Edit = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
-        fetch(`http://127.0.0.1:8000/api/collections/${id}`, {
+        fetch(`${import.meta.env.VITE_API_URL}/api/collections/${id}`, {
             method: 'PUT',
             headers: {
-                'Accept' : 'application/json',
-                'Content-Type': 'application/json'
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
                 collection: collection,
