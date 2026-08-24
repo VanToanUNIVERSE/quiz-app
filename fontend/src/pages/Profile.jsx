@@ -12,12 +12,21 @@ const Profile = () => {
     const [responseMessage, setResponseMessage] = useState('');
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || '');
     const [collections, setCollections] = useState([]);
+    const token = localStorage.getItem('token');
     useEffect(() => {
         if (user === '') {
             return;
         }
         setLoading(true);
-        fetch(`http://127.0.0.1:8000/api/users/showCollections?userId=${user.id}`).then(res => res.json()).then(data => {
+        fetch(`${import.meta.env.VITE_API_URL}/api/users/showCollections`,
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Accept": "application/json"
+                }
+            }
+        ).then(res => res.json()).then(data => {
             console.log(data.collections);
             setCollections(data.collections);
             setLoading(false);
@@ -32,7 +41,7 @@ const Profile = () => {
     const deleteCollection = (id) => {
         setLoading(true);
         setCofirm(null);
-        fetch(`http://127.0.0.1:8000/api/collections/${id}`, {
+        fetch(`${import.meta.env.VITE_API_URL}/api/collections/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -45,7 +54,7 @@ const Profile = () => {
             }).catch(err => {
                 setResponseMessage(err);
                 setLoading(false);
-                });
+            });
     }
     return (
         <div className='background-image-random p-10 text-gray-200'>

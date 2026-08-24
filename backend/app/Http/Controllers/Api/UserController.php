@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     function showCollections(Request $request) {
-        $userId = $request->userId;
+        $userId = $request->user()->id;
         $collections = User::find($userId)->collections;
         return response()->json([
             'collections' => $collections,
