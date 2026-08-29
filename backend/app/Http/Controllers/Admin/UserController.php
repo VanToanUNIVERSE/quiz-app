@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -60,8 +61,12 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        if ($user->id === Auth::id()) {
+            return back()->withErrors(['delete' => 'Không thể tự xóa tài khoản của mình']);
+        }
+        $user->delete();
+        return back()->with('success', 'Đã xóa user thành công');
     }
 }
