@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable; 
-    protected $fillable = ['username', 'password', 'fullName', 'image'];
+    protected $fillable = ['username', 'password', 'fullName', 'image', 'role'];
     protected $hidden = ['password'];
     public function collections() {
         return $this->hasMany(Collection::class);

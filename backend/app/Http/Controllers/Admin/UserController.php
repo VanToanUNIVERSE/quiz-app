@@ -53,9 +53,19 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'role' => 'required|in:admin,user'
+        ]);
+        $role = $request->role;
+        if ($user->id === Auth::id()) {
+            return back()->withErrors(['role' => 'Không thể tự đổi vai trò của mình']);
+        }
+        $user->update([
+            'role' => $role
+        ]);
+        return back()->with('success', 'Đã cập nhật user thành công');
     }
 
     /**
