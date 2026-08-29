@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
 
@@ -25,5 +26,6 @@ Route::middleware('admin')->group(function() {
     Route::get('/admin/dashboard', function() {
         return 'Admin dashboard - login thành công!';
     })->name('admin.dashboard');
+    Route::resource('/admin/users', UserController::class)->only(['index','destroy'])->names('admin.users');
 });
 
