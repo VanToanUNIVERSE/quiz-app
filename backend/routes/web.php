@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/admin/login', [AdminAuthController::class, 'showLogin']);
+Route::post('/admin/login', [AdminAuthController::class, 'login']);
+
+Route::middleware('admin')->group(function() {
+    Route::get('/admin/dashboard', function() {
+        return 'Admin dashboard - login thành công!';
+    })->name('admin.dashboard');
+});
+
