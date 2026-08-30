@@ -36,9 +36,10 @@ class CollectionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Collection $collection)
     {
-        //
+        $collection->load('quizzes.answers');
+        return view('admin.collections.show', compact('collection'));
     }
 
     /**

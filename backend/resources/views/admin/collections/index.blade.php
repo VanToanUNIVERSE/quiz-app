@@ -22,11 +22,7 @@
                     @method('DELETE')
                     <button type="submit">Xóa</button>
                 </form>
-                <form method="POST" action="{{ route('admin.collections.show', $collection->id) }}">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit">Xem chi tiết</button>
-                </form>
+                <a href="{{ route('admin.collections.show', $collection->id) }}">Xem</a>
             </td>
         </tr>
     @endforeach

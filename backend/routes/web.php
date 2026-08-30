@@ -27,7 +27,7 @@ Route::middleware('admin')->group(function() {
     Route::get('/admin/dashboard', function() {
         return 'Admin dashboard - login thành công!';
     })->name('admin.dashboard');
-    Route::resource('/admin/users', UserController::class)->only(['index','destroy','show'])->names('admin.users');
-    Route::resource('/admin/collections', CollectionController::class)->only(['index','destroy','update'])->names('admin.collections');
+    Route::resource('/admin/users', UserController::class)->only(['index','destroy','update'])->names('admin.users');
+    Route::resource('/admin/collections', CollectionController::class)->only(['index','destroy','show'])->names('admin.collections');
 });
 
