@@ -61,8 +61,9 @@ class CollectionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Collection $collection)
     {
-        //
+        $collection->delete();
+        return back()->with('success', 'Đã xóa collection thành công');
     }
 }
