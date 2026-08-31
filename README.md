@@ -2,6 +2,7 @@
 ## Tính năng: 
   - Tạo/sửa/xóa bộ câu hỏi
   - Làm bài, chấm điểm server-side chống gian lận, xác thực người dùng
+  - Admin panel: quản lý user (phân quyền, đổi role), collection, quiz — với xác thực session và phân quyền qua middleware.
 ## Công nghệ: 
 Backend Laravel (REST API, Sanctum), Frontend React + Vite, MySQL.
 
@@ -29,3 +30,4 @@ Dự án được tự rà soát bảo mật, phát hiện và vá 8 lỗ hổng
 nghiêm trọng nhất là API để lộ đáp án cho client. 
 Đã chuyển toàn bộ việc chấm điểm về server kèm kiểm tra chống gian lận, 
 ẩn đáp án khỏi API, thêm xác thực và validation.
+Phân quyền admin hai lớp (controller + middleware), chặn tự-xóa/tự-hạ-quyền.
