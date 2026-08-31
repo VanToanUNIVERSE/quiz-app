@@ -8,6 +8,7 @@ import Loading from '../components/ui/Loading';
 const Login = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState({});
+    const [showPassword, setShowPassword] = useState(false);
     const [response, setResponse] = useState({
         message: '',
         status: '',
@@ -46,7 +47,7 @@ const Login = () => {
                 setLoading(false);
                 if (!data.errors) {
                     // Lưu user vào localStorage
-                    
+
                     localStorage.setItem("token", data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                 }
@@ -56,7 +57,7 @@ const Login = () => {
     };
     const invisible = () => {
         setResponse({ message: '', status: '' });
-        
+
     }
     return (
         <div className='p-1 background-image-random'>
@@ -64,9 +65,18 @@ const Login = () => {
                 <div id='login-header' className=' bg-amber-200 absolute top-0 start-[50%] -translate-x-[50%] p-3 rounded-b-2xl'>
                     <span className=' text-3xl'>Login</span>
                 </div>
-                
+
                 <InputGroup label="Username" for="username" id="username" name="username" type="text" onChange={handleValidate} error={error.username}></InputGroup>
-                <InputGroup label="Password" for="password" id="password" name="password" type="password" onChange={handleValidate} error={error.password}></InputGroup>
+                <div className="relative w-full">
+                    <InputGroup label="Password" for="password" id="password" name="password"
+                        type={showPassword ? 'text' : 'password'}
+                        onChange={handleValidate} error={error.password} />
+                    <button type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2">
+                        {showPassword ? '🙈' : '👁️'}
+                    </button>
+                </div>
                 <div className='flex justify-between w-full mt-2'>
                     <button id='submit-btn' type='submit' className='px-7 py-1 bg-blue-500 hover:bg-blue-400 rounded cursor-pointer'>{loading ? <Loading></Loading> : 'Login'}</button>
                     <Link to="/register" className=' underline text-white' >Register</Link>

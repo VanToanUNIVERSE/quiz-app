@@ -112,7 +112,7 @@ h1 {
 }
 
 .input-field:focus ~ .label,
-.input-field:valid ~ .label {
+.input-field:not(:placeholder-shown) ~ .label {
   position: absolute;
   top: 0px;
   left: 20px;
