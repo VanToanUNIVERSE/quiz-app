@@ -8,6 +8,8 @@ import Loading from '../components/ui/Loading';
 const Register = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState({});
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [form, setForm] = useState({
         username: '',
         password: '',
@@ -79,8 +81,26 @@ const Register = () => {
                     <span className=' text-3xl'>Register</span>
                 </div>
                 <InputGroup label="Username" for="username" id="username" name="username" type="text" onChange={handleValidate} error={error.username}></InputGroup>
-                <InputGroup label="Password" for="password" id="password" name="password" type="password" onChange={handleValidate} error={error.password}></InputGroup>
-                <InputGroup label="Confirm password" for="confirm-password" id="confirm-password" name="confirmPassword" type="password" onChange={handleValidate} error={error.confirmPassword}></InputGroup>
+                <div className="relative w-full">
+                    <InputGroup label="Password" for="password" id="password" name="password"
+                        type={showPassword ? 'text' : 'password'}
+                        onChange={handleValidate} error={error.password} />
+                    <button type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2">
+                        {showPassword ? '🙈' : '👁️'}
+                    </button>
+                </div>
+
+                <div className="relative w-full">
+                    <InputGroup label="Confirm password" for="confirm-password" id="confirm-password" name="confirmPassword" type={showPassword ? 'text' : 'password'} onChange={handleValidate} error={error.confirmPassword}></InputGroup>
+                    <button type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2">
+                        {showConfirmPassword ? '🙈' : '👁️'}
+                    </button>
+                </div>
+                
                 <InputGroup label="Full Name" for="full-name" id="full-name" name="fullName" type="text" onChange={handleValidate} error={error.fullName}></InputGroup>
                 <div className='flex flex-col w-full '>
                     <label className="block mb-2 text-sm font-medium text-white dark:text-white" htmlFor="file_input">Image: </label>
