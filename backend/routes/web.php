@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CollectionController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\QuizController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
 
@@ -29,5 +30,6 @@ Route::middleware('admin')->group(function() {
     })->name('admin.dashboard');
     Route::resource('/admin/users', UserController::class)->only(['index','destroy','update'])->names('admin.users');
     Route::resource('/admin/collections', CollectionController::class)->only(['index','destroy','show'])->names('admin.collections');
+    Route::resource('/admin/quizzes', QuizController::class)->only(['destroy'])->names('admin.quizzes');
 });
 

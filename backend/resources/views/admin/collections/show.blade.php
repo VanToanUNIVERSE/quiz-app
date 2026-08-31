@@ -13,5 +13,11 @@
                 </li>
             @endforeach
         </ul>
+        <form method="POST" action="{{ route('admin.quizzes.destroy', $quiz->id) }}"
+            onsubmit="return confirm('Xóa câu này?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit">Xóa</button>
+        </form>
     </div>
 @endforeach
