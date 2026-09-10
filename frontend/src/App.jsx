@@ -9,6 +9,8 @@ import Register from './pages/Register.jsx'
 import CreateQuiz from './pages/CreateQuiz.jsx'
 import Profile from './pages/Profile.jsx'
 import Edit from './pages/Edit.jsx'
+import TestRealtime from './pages/TestRealtime.jsx'  // ← THÊM dòng này
+
 
 
 function App() {
@@ -24,6 +26,7 @@ function App() {
         <Route path='/create-quiz' element={<CreateQuiz></CreateQuiz>}></Route>
         <Route path='/profile' element={<Profile></Profile>}></Route>
         <Route path='/edit' element={<Edit></Edit>}></Route>
+        <Route path='/test-realtime' element={<TestRealtime></TestRealtime>}></Route>
       </Routes>
     </BrowserRouter>
   )

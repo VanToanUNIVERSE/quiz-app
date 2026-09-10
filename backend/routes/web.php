@@ -33,3 +33,8 @@ Route::middleware('admin')->group(function() {
     Route::resource('/admin/quizzes', QuizController::class)->only(['destroy'])->names('admin.quizzes');
 });
 
+Route::get('/test-broadcast', function () {
+    event(new \App\Events\MessageSent('Xin chào real-time!'));
+    return 'Đã phát event!';
+});
+
