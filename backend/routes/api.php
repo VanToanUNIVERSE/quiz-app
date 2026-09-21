@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\GameSessionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -30,7 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('collections', CollectionController::class)->except(['index', 'show']);
     Route::get('/users/showCollections', [UserController::class, 'showCollections']);
-    
+    Route::post('/game', [GameSessionController::class, 'store']);
 });
 
 
