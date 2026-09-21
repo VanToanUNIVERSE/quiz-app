@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('collections', CollectionController::class)->except(['index', 'show']);
     Route::get('/users/showCollections', [UserController::class, 'showCollections']);
     Route::post('/game', [GameSessionController::class, 'store']);
+    Route::post('/game/join/{roomCode}', [GameSessionController::class, 'join']);
 });
 
 
