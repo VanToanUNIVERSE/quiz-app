@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PlayQuizResource;
+use App\Http\Resources\QuizResource;
 use App\Models\GameSession;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
@@ -54,9 +56,71 @@ class GameSessionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request, GameSession $gameSession)
     {
-        //
+
+        if ($gameSession->player1_id != $request->user()->id && $gameSession->player2_id != $request->user()->id) {
+            return response()->json(['message' => 'You are not allowed to view this game session.'], 403);
+        }
+        if ($gameSession->status === 'waiting') {
+            return response()->json([
+                'message' => 'Waiting for players to join',
+                'id' => $gameSession->id,
+                'roomCode' => $gameSession->room_code,
+                'status' => $gameSession->status,
+                'player1_id' => $gameSession->player1_id,
+                'player2_id' => $gameSession->player2_id,
+            ], 200);
+        }
+        if ($gameSession->status === 'playing') {
+            if ($gameSession->current_index >= count($gameSession->quiz_ids)) {
+                return response()->json([
+                    'message' => 'Index of quiz is out of range',
+                    'id' => $gameSession->id,
+                    'roomCode' => $gameSession->room_code,
+                    'status' => $gameSession->status,
+                    'player1_id' => $gameSession->player1_id,
+                    'player2_id' => $gameSession->player2_id,
+                ], 200);
+            }
+            $currentQuiz = Quiz::find($gameSession->quiz_ids[$gameSession->current_index]);
+            if (!$currentQuiz) {
+                return response()->json([
+                    'message' => 'Invalid quiz id',
+
+                ], 409);
+
+            }
+            return response([
+                'message' => 'Game session is playing',
+                'id' => $gameSession->id,
+                'roomCode' => $gameSession->room_code,
+                'status' => $gameSession->status,
+                'player1_id' => $gameSession->player1_id,
+                'player2_id' => $gameSession->player2_id,
+                'player1_hp' => $gameSession->player1_hp,
+                'player2_hp' => $gameSession->player2_hp,
+                'winner_id' => $gameSession->winner_id,
+                'answered_by' => $gameSession->answered_by,
+                'currentIndex' => $gameSession->current_index,
+                'question_started_at' => $gameSession->question_started_at,
+                'currentQuiz' => new PlayQuizResource($currentQuiz)
+            ], 200);
+        }
+        if ($gameSession->status === 'finished') {
+            return response()->json([
+                'message' => 'Game session is finished',
+                'id' => $gameSession->id,
+                'roomCode' => $gameSession->room_code,
+                'status' => $gameSession->status,
+                'player1_id' => $gameSession->player1_id,
+                'player2_id' => $gameSession->player2_id,
+                'player1_hp' => $gameSession->player1_hp,
+                'player2_hp' => $gameSession->player2_hp,
+                'winner_id' => $gameSession->winner_id,
+                'currentQuiz' => null
+            ], 200);
+        }
     }
 
     /**
@@ -84,13 +148,13 @@ class GameSessionController extends Controller
                 abort(404, 'Invalid room code.');
             }
             $player1Id = $gameSession->player1_id;
-            if($request->user()->id === $player1Id) {
+            if ($request->user()->id === $player1Id) {
                 abort(403, 'You cannot join this game session.');
             }
             if ($gameSession->status !== 'waiting') {
                 abort(409, 'Game session is already in progress.');
             }
-            if($gameSession->player2_id) {
+            if ($gameSession->player2_id) {
                 abort(409, 'Game session is already full.');
             }
             $gameSession->player2_id = $request->user()->id;

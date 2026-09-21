@@ -26,6 +26,10 @@ class GameSession extends Model
     protected $casts = [
         'quiz_ids' => 'array',
         'question_started_at' => 'datetime',
+        'player1_hp' => 'integer',
+        'player2_hp' => 'integer',
+        'player1_id' => 'integer',
+        'player2_id' => 'integer',
     ];
 
     public function player1()
