@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PlayQuizResource;
 use App\Http\Resources\QuizResource;
+use App\Models\Answer;
 use App\Models\GameSession;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -163,5 +165,107 @@ class GameSessionController extends Controller
             $gameSession->update();
         });
         return response()->json(['message' => 'Game session joined successfully.'], 200);
+    }
+
+    public function answer(Request $request, GameSession $gameSession)
+    {
+        $request->validate([
+            'answer_id' => 'required|exists:answers,id'
+        ]);
+
+        $data = DB::transaction(function () use ($request, $gameSession) {
+            $gameSession = GameSession::where('id', $gameSession->id)->lockForUpdate()->first();
+            $answer = Answer::find($request->answer_id);
+            if (!$answer) {
+                abort(404, 'Invalid answer id.');
+            }
+            if ($gameSession->player1_id != $request->user()->id && $gameSession->player2_id != $request->user()->id) {
+                abort(403, 'You are not allowed to answer this game session.');
+            }
+            if ($gameSession->status !== 'playing') {
+                abort(409, 'Game session is not in playing status.');
+            }
+            if ($gameSession->question_started_at == null) {
+                abort(409, 'Dont have start time');
+            }
+            $questionEndAt = $gameSession->question_started_at->copy()->addSeconds(15);
+            if (now()->greaterThanOrEqualTo($questionEndAt)) {
+                abort(409, 'Out of time to answer.');
+            }
+            if ($gameSession->answered_by) {
+                abort(409, 'This question has already been answered');
+            }
+            if ($gameSession->current_index >= count($gameSession->quiz_ids)) {
+                abort(409, 'Index of quiz is out of range.');
+            }
+            if ($answer->quiz_id != $gameSession->quiz_ids[$gameSession->current_index]) {
+                abort(409, 'Id of answer is invalid.');
+            }
+            
+            $gameSession->answered_by = $request->user()->id;//Nếu chưa có ai trả lời thì gán người trả lời là user hiện tại để khóa không chep người sau trả lời
+            $last_answered_by = $request->user()->id;
+            //Trừ hp
+            if ($answer->correct) {
+                if ($request->user()->id == $gameSession->player1_id) {
+                    $gameSession->player2_hp -= 10;
+                }
+                if ($request->user()->id == $gameSession->player2_id) {
+                    $gameSession->player1_hp -= 10;
+                }
+            } else {
+                if ($request->user()->id == $gameSession->player1_id) {
+                    $gameSession->player1_hp -= 10;
+                }
+                if ($request->user()->id == $gameSession->player2_id) {
+                    $gameSession->player2_hp -=  10;
+                }
+            }
+            //không cho phép hp < 0
+            $gameSession->player1_hp = max($gameSession->player1_hp, 0);
+            $gameSession->player2_hp = max($gameSession->player2_hp, 0);
+            //Xét ai là người chiến thắng
+            if ($gameSession->player1_hp <= 0 || $gameSession->player2_hp <= 0) {
+                $gameSession->winner_id = null;
+                if ($gameSession->player1_hp <= 0 && $gameSession->player2_hp > 0) {
+                    $gameSession->winner_id = $gameSession->player2_id;
+                }
+                if ($gameSession->player2_hp <= 0 && $gameSession->player1_hp > 0) {
+                    $gameSession->winner_id = $gameSession->player1_id;
+                }
+                $gameSession->status = 'finished';
+                $gameSession->question_started_at = null;
+            }
+
+            if ($gameSession->status != 'finished') {
+                $gameSession->current_index++; //dời câu hỏi sau câu kê
+                $gameSession->answered_by = null; //trả về null để tiếp tục câu kế tiếp
+                $gameSession->question_started_at = now(); //đếm lại thời gian khi bắt đầu câu kế tiếp
+            }
+            $gameSession->update(); //cập nhật gameSession
+            return (object) [
+                'message' => 'Answer submitted successfully.',
+                'correct' => $answer->correct,
+                'last_answered_by' => $last_answered_by,
+                'player1_hp' => $gameSession->player1_hp,
+                'player2_hp' => $gameSession->player2_hp,
+                'status' => $gameSession->status, 
+                'winner_id' => $gameSession->winner_id,
+                'current_index' => $gameSession->current_index,
+                'question_started_at' => $gameSession->question_started_at,
+            ];
+        });
+    
+        return response()->json([
+            'message' => $data->message,
+            'is_correct' => $data->correct,
+            'last_answered_by' => $data->last_answered_by,
+            'player1_hp' => $data->player1_hp,
+            'player2_hp' => $data->player2_hp,
+            'status' => $data->status,
+            'winner_id' => $data->winner_id,
+            'current_index' => $data->current_index,
+            'question_started_at' => $data->question_started_at,
+        
+        ]);
     }
 }
